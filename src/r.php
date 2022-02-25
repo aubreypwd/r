@@ -41,7 +41,7 @@ define( 'RCLASSNAME', 1900 );
 define( 'RMEASURE', 2000 );
 
 /**
- * ray()->r( OPTS, ...$vars ).
+ * ray()->r( OPTS, ...$vars )
  */
 Spatie\Ray\Ray::macro( 'r', function( ...$vars ) {
 
@@ -154,7 +154,7 @@ Spatie\Ray\Ray::macro( 'r', function( ...$vars ) {
 	 * output later.
 	 */
 
-	// ->once().
+	// ->once()
 	if ( in_array( RONCE, $opts ) ) {
 
 		if ( ! is_null( $ray ) ) {
@@ -164,7 +164,7 @@ Spatie\Ray\Ray::macro( 'r', function( ...$vars ) {
 		}
 	}
 
-	// ->table().
+	// ->table()
 	if ( in_array( RTABLE, $opts ) && isset( $vars[0] ) ) {
 
 		if ( ! is_null( $ray ) ) {
@@ -174,7 +174,7 @@ Spatie\Ray\Ray::macro( 'r', function( ...$vars ) {
 		}
 	}
 
-	// ->className().
+	// ->className()
 	if ( in_array( RCLASSNAME, $opts ) ) {
 
 		if ( ! is_null( $ray ) ) {
@@ -191,17 +191,12 @@ Spatie\Ray\Ray::macro( 'r', function( ...$vars ) {
 	 * examinging variables.
 	 */
 
-	// ->measure().
+	// ->measure()
 	if ( in_array( RMEASURE, $opts ) ) {
 		ray()->measure();
 	}
 
-	// ->trace().
-	if ( in_array( RTRACE, $opts ) ) {
-		ray()->trace();
-	}
-
-	// ->count().
+	// ->count()
 	if ( in_array( RCOUNT, $opts ) ) {
 		ray()->count();
 	}
@@ -298,6 +293,12 @@ Spatie\Ray\Ray::macro( 'r', function( ...$vars ) {
 	 * Stuff that won't work.
 	 */
 
+	// ->trace()
+	if ( in_array( RTRACE, $opts ) ) {
+		throw new Exception( 'Sorry but this requires scope, use ray()->trace() intead.' );
+	}
+
+	// ->caller()
 	if ( in_array( RCALLER, $opts ) ) {
 		throw new Exception( 'Sorry but this requires scope, use ray()->caller() intead.' );
 	}
