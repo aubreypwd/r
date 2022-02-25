@@ -65,7 +65,7 @@ if ( ! function_exists( 'r' ) && function_exists( 'ray' ) ) {
 						continue;
 					}
 
-					$opts[ abs( (int) constant( $constant ) ) ] = trim( $opt_config[1] ?? '' );
+					$opts[ abs( (int) constant( $constant ) ) ] = (string) trim( $opt_config[1] ?? '' );
 
 					unset( $opts[ $opt_key ] );
 				}
