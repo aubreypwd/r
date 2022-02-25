@@ -38,6 +38,7 @@ define( 'RTRACE', 1600 ); // https://spatie.be/docs/ray/v1/usage/framework-agnos
 define( 'RCOUNT', 1700 ); // https://spatie.be/docs/ray/v1/usage/framework-agnostic-php-project#counting-execution-times
 define( 'RONCE', 1800 ); // https://spatie.be/docs/ray/v1/usage/framework-agnostic-php-project#sending-a-payload-once
 define( 'RCLASSNAME', 1900 ); // https://spatie.be/docs/ray/v1/usage/framework-agnostic-php-project#display-the-class-name-of-an-object
+define( 'RMEASURE', 2000 ); // https://spatie.be/docs/ray/v1/usage/framework-agnostic-php-project#measuring-performance-and-memory-usage
 
 if ( ! function_exists( 'r' ) && function_exists( 'ray' ) ) {
 
@@ -172,6 +173,9 @@ if ( ! function_exists( 'r' ) && function_exists( 'ray' ) ) {
 			$ray = ray()->className( ...$vars );
 		}
 
+		if ( in_array( RMEASURE, $opts ) ) {
+			ray()->measure();
+		}
 
 		$ray = is_null( $ray ) ? ray( ...$vars ) : $ray;
 
