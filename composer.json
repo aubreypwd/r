@@ -11,5 +11,10 @@
     ],
     "require": {
         "spatie/ray": "~1.33"
+    },
+    "autoload": {
+        "files": [
+            "src/helpers.php"
+        ]
     }
 }
