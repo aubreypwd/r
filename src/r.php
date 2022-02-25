@@ -40,7 +40,17 @@ define( 'RONCE', 1800 ); // https://spatie.be/docs/ray/v1/usage/framework-agnost
 define( 'RCLASSNAME', 1900 ); // https://spatie.be/docs/ray/v1/usage/framework-agnostic-php-project#display-the-class-name-of-an-object
 define( 'RMEASURE', 2000 ); // https://spatie.be/docs/ray/v1/usage/framework-agnostic-php-project#measuring-performance-and-memory-usage
 
+/**
+ * ray()->r( OPTS, ...$vars ).
+ */
 Spatie\Ray\Ray::macro( 'r', function( ...$vars ) {
+
+	/**
+	 * Plug out opts
+	 *
+	 * Options should be passed in the first item as an
+	 * array or string.
+	 */
 
 	$opts = $vars[0] ?? [];
 
@@ -49,6 +59,26 @@ Spatie\Ray\Ray::macro( 'r', function( ...$vars ) {
 	if ( ! is_array( $opts ) && ! is_string( $opts ) ) {
 		throw new \InvalidArgumentException( '$opts must be a string or an array.' );
 	}
+
+	/**
+	 * String vs. Array
+	 *
+	 * You can call ->r using a string or an array, e.g.
+	 *
+	 *     ray()->r( 'RLABEL=Something,RSHOW,RRED,RTRACE,RPAUSE', $vars );
+	 *
+	 * OR, as an array:
+	 *
+	 *     ray()->r( [
+	 *         RLABEL => 'Something',
+	 *         RSHOW,
+	 *         RRED,
+	 *         RTRACE,
+	 *         RPAUSE,
+	 *     ], $vars );
+	 *
+	 * This makes sure it works.
+	 */
 
 	if ( is_string( $opts ) ) {
 
@@ -83,40 +113,112 @@ Spatie\Ray\Ray::macro( 'r', function( ...$vars ) {
 		}
 	}
 
-	if ( in_array( RCALLER, $opts ) ) {
-		throw new Exception( 'Sorry but this requires scope, use ray()->caller() intead.' );
-	}
-
-	if ( in_array( RTRACE, $opts ) ) {
-		throw new Exception( 'Sorry but this requires scope, use ray()->trace() intead.' );
-	}
-
-	if ( in_array( RCOUNT, $opts ) ) {
-		throw new Exception( 'Sorry but this requires scope, use ray()->count() intead.' );
-	}
+	/**
+	 * Get ready!
+	 */
 
 	$ray = null;
 
+	/**
+	 * Screen operations before output.
+	 */
+
+	// Clear everything.
 	if ( in_array( RCLEARALL, $opts ) ) {
 		ray()->clearAll();
 	}
 
+	// Create a new screen.
 	if ( in_array( RNSCREEN, $opts ) ) {
+
 		ray()->newScreen();
 	} elseif (
+
 		in_array( RNSCREEN, array_keys( $opts ) ) &&
 		is_string( $opts[ RNSCREEN ] )
 	) {
+
 		ray()->newScreen( $opts[ RNSCREEN ] );
 	}
 
+	// Clear current screen.
 	if ( in_array( RCLEAR, $opts ) ) {
 		ray()->clearScreen();
 	}
 
-	if ( in_array( RSHOW, $opts ) ) {
-		ray()->showApp();
+	/**
+	 * Outputting Vars in Specific Formats
+	 *
+	 * The items here usually precent output later,
+	 * so might create a $ray instance that may skip
+	 * output later.
+	 */
+
+	// ->once().
+	if ( in_array( RONCE, $opts ) ) {
+
+		if ( ! is_null( $ray ) ) {
+			$ray->once( ...$vars );
+		} else {
+			$ray = ray()->once( ...$vars );
+		}
 	}
+
+	// ->table().
+	if ( in_array( RTABLE, $opts ) && isset( $vars[0] ) ) {
+
+		if ( ! is_null( $ray ) ) {
+			$ray->table( $vars[0] );
+		} else {
+			$ray = ray()->table( $vars[0] );
+		}
+	}
+
+	// ->className().
+	if ( in_array( RCLASSNAME, $opts ) ) {
+
+		if ( ! is_null( $ray ) ) {
+			$ray->className( ...$vars );
+		} else {
+			$ray = ray()->className( ...$vars );
+		}
+	}
+
+	/**
+	 * Output Agnostic
+	 *
+	 * These things output stuff but they aren't about
+	 * examinging variables.
+	 */
+
+	// ->measure().
+	if ( in_array( RMEASURE, $opts ) ) {
+		ray()->measure();
+	}
+
+	// ->trace().
+	if ( in_array( RTRACE, $opts ) ) {
+		ray()->trace();
+	}
+
+	// ->count().
+	if ( in_array( RCOUNT, $opts ) ) {
+		ray()->count();
+	}
+
+	/**
+	 * Normal Output
+	 *
+	 * Note, you might have already ouput vars above in specific formats,
+	 * and if you did we won't do that again here but instead add
+	 * properties to the output.
+	 */
+
+	$ray = ! is_null( $ray ) ? $ray : ray( ...$vars );
+
+	/**
+	 * Colors of Output
+	 */
 
 	if ( in_array( RLARGE, $opts ) ) {
 		$size = 'large';
@@ -150,49 +252,56 @@ Spatie\Ray\Ray::macro( 'r', function( ...$vars ) {
 		$color = 'gray';
 	}
 
-	if ( in_array( RONCE, $opts ) ) {
-		$ray = ray()->once( ...$vars );
-	}
-
-	if ( in_array( RTABLE, $opts ) && isset( $vars[0] ) ) {
-
-		if ( is_null( $ray ) ) {
-			$ray = ray()->table( $vars[0] );
-		}
-
-		$ray->table( $vars[0] );
-	}
-
-	if ( in_array( RCLASSNAME, $opts ) ) {
-		$ray = ray()->className( ...$vars );
-	}
-
-	if ( in_array( RMEASURE, $opts ) ) {
-		ray()->measure();
-	}
-
-	$ray = is_null( $ray ) ? ray( ...$vars ) : $ray;
-
 	if ( ! empty( $color ) ) {
 		$ray->$color();
 	}
+
+	/**
+	 * Size of Output
+	 */
 
 	if ( ! empty( $size ) ) {
 		$ray->$size();
 	}
 
+	/**
+	 * Label of Output
+	 */
+
 	if ( in_array( RLABEL, array_keys( $opts ) ) && is_string( $opts[ RLABEL ] ) ) {
-		ray()->label( $opts[ RLABEL ] );
+		$ray->label( $opts[ RLABEL ] );
 	}
 
-	if ( in_array( RPAUSE, $opts ) ) {
-		ray()->pause();
+	/**
+	 * Execution
+	 *
+	 * The items here make the app do things AFTER output
+	 * of vars have been ouput and properties too.
+	 */
+
+	// Show the app.
+	if ( in_array( RSHOW, $opts ) ) {
+		ray()->showApp();
 	}
 
+	// Add a Separator.
 	if ( in_array( RSEP, $opts ) ) {
 		ray()->separator();
 	}
 
-	return $ray;
+	// Pause execution.
+	if ( in_array( RPAUSE, $opts ) ) {
+		ray()->pause();
+	}
+
+	/**
+	 * Stuff that won't work.
+	 */
+
+	if ( in_array( RCALLER, $opts ) ) {
+		throw new Exception( 'Sorry but this requires scope, use ray()->caller() intead.' );
+	}
+
+	return $this;
 
 } );
