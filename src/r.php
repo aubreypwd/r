@@ -19,7 +19,7 @@ if ( file_exists( __DIR__ . '/../vendor/autoload.php' ) ) {
 
 define( 'RSHOW', 100 );
 define( 'RCLEAR', 200 );
-define( 'RPAUSE', 300 );
+define( 'RPAUSE', 300 ); // https://spatie.be/docs/ray/v1/usage/framework-agnostic-php-project#pausing-execution
 define( 'RGREEN', 400 );
 define( 'RORANGE', 500 );
 define( 'RRED', 600 );
@@ -35,6 +35,8 @@ define( 'RLABEL', 1400 );
 define( 'RCLEARALL', 1400 ); // https://spatie.be/docs/ray/v1/usage/framework-agnostic-php-project#clearing-everything-including-history
 define( 'RCALLER', 1500 ); // https://spatie.be/docs/ray/v1/usage/framework-agnostic-php-project#see-the-caller-of-a-function
 define( 'RTRACE', 1600 ); // https://spatie.be/docs/ray/v1/usage/framework-agnostic-php-project#see-the-caller-of-a-function
+define( 'RCOUNT', 1700 ); // https://spatie.be/docs/ray/v1/usage/framework-agnostic-php-project#counting-execution-times
+define( 'RONCE', 1800 ); // https://spatie.be/docs/ray/v1/usage/framework-agnostic-php-project#sending-a-payload-once
 
 if ( ! function_exists( 'r' ) && function_exists( 'ray' ) ) {
 
@@ -86,11 +88,15 @@ if ( ! function_exists( 'r' ) && function_exists( 'ray' ) ) {
 		}
 
 		if ( in_array( RCALLER, $opts ) ) {
-			throw new Exception( 'Sorry, but you cannot r() and RCALLER, use ray()->caller() intead.' );
+			throw new Exception( 'Sorry but this requires scope, use ray()->caller() intead.' );
 		}
 
 		if ( in_array( RTRACE, $opts ) ) {
-			throw new Exception( 'Sorry, but you cannot r() and RTRACE, use ray()->trace() intead.' );
+			throw new Exception( 'Sorry but this requires scope, use ray()->trace() intead.' );
+		}
+
+		if ( in_array( RCOUNT, $opts ) ) {
+			throw new Exception( 'Sorry but this requires scope, use ray()->count() intead.' );
 		}
 
 		$ray = null;
@@ -146,6 +152,10 @@ if ( ! function_exists( 'r' ) && function_exists( 'ray' ) ) {
 
 		if ( in_array( RGRAY, $opts ) ) {
 			$color = 'gray';
+		}
+
+		if ( in_array( RONCE, $opts ) ) {
+			$ray = ray()->once( ...$vars );
 		}
 
 		if ( in_array( RTABLE, $opts ) && isset( $vars[0] ) ) {
