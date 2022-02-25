@@ -19,7 +19,7 @@ if ( file_exists( __DIR__ . '/../vendor/autoload.php' ) ) {
 
 define( 'RSHOW', 100 );
 define( 'RCLEAR', 200 );
-define( 'RPAUSE', 300 ); // https://spatie.be/docs/ray/v1/usage/framework-agnostic-php-project#pausing-execution
+define( 'RPAUSE', 300 );
 define( 'RGREEN', 400 );
 define( 'RORANGE', 500 );
 define( 'RRED', 600 );
@@ -32,13 +32,13 @@ define( 'RTABLE', 1100 );
 define( 'RSEP', 1200 );
 define( 'RNSCREEN', 1300 );
 define( 'RLABEL', 1400 );
-define( 'RCLEARALL', 1400 ); // https://spatie.be/docs/ray/v1/usage/framework-agnostic-php-project#clearing-everything-including-history
-define( 'RCALLER', 1500 ); // https://spatie.be/docs/ray/v1/usage/framework-agnostic-php-project#see-the-caller-of-a-function
-define( 'RTRACE', 1600 ); // https://spatie.be/docs/ray/v1/usage/framework-agnostic-php-project#see-the-caller-of-a-function
-define( 'RCOUNT', 1700 ); // https://spatie.be/docs/ray/v1/usage/framework-agnostic-php-project#counting-execution-times
-define( 'RONCE', 1800 ); // https://spatie.be/docs/ray/v1/usage/framework-agnostic-php-project#sending-a-payload-once
-define( 'RCLASSNAME', 1900 ); // https://spatie.be/docs/ray/v1/usage/framework-agnostic-php-project#display-the-class-name-of-an-object
-define( 'RMEASURE', 2000 ); // https://spatie.be/docs/ray/v1/usage/framework-agnostic-php-project#measuring-performance-and-memory-usage
+define( 'RCLEARALL', 1400 );
+define( 'RCALLER', 1500 );
+define( 'RTRACE', 1600 );
+define( 'RCOUNT', 1700 );
+define( 'RONCE', 1800 );
+define( 'RCLASSNAME', 1900 );
+define( 'RMEASURE', 2000 );
 
 /**
  * ray()->r( OPTS, ...$vars ).
