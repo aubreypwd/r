@@ -33,6 +33,8 @@ define( 'RSEP', 1200 );
 define( 'RNSCREEN', 1300 );
 define( 'RLABEL', 1400 );
 define( 'RCLEARALL', 1400 ); // https://spatie.be/docs/ray/v1/usage/framework-agnostic-php-project#clearing-everything-including-history
+define( 'RCALLER', 1500 ); // https://spatie.be/docs/ray/v1/usage/framework-agnostic-php-project#see-the-caller-of-a-function
+define( 'RTRACE', 1600 ); // https://spatie.be/docs/ray/v1/usage/framework-agnostic-php-project#see-the-caller-of-a-function
 
 if ( ! function_exists( 'r' ) && function_exists( 'ray' ) ) {
 
@@ -83,9 +85,15 @@ if ( ! function_exists( 'r' ) && function_exists( 'ray' ) ) {
 			}
 		}
 
-		$ray   = null;
-		$color = '';
-		$size  = '';
+		if ( in_array( RCALLER, $opts ) ) {
+			throw new Exception( 'Sorry, but you cannot r() and RCALLER, use ray()->caller() intead.' );
+		}
+
+		if ( in_array( RTRACE, $opts ) ) {
+			throw new Exception( 'Sorry, but you cannot r() and RTRACE, use ray()->trace() intead.' );
+		}
+
+		$ray = null;
 
 		if ( in_array( RCLEARALL, $opts ) ) {
 			ray()->clearAll();
