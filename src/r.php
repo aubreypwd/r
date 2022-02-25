@@ -155,6 +155,23 @@ Spatie\Ray\Ray::macro( 'r', function( ...$vars ) {
 	 * output later.
 	 */
 
+	// ->measure()
+	if ( in_array( RMEASURE, $opts ) ) {
+		if ( is_callable( $vars[1] ?? false ) ) {
+			if ( ! is_null( $ray ) ) {
+				$ray->measure( $vars[1] );
+			} else {
+				$ray = ray()->measure( $vars[1] );
+			}
+		} else {
+			if ( ! is_null( $ray ) ) {
+				$ray->measure();
+			} else {
+				$ray = ray()->measure();
+			}
+		}
+	}
+
 	// ->once()
 	if ( in_array( RONCE, $opts ) ) {
 
@@ -191,11 +208,6 @@ Spatie\Ray\Ray::macro( 'r', function( ...$vars ) {
 	 * These things output stuff but they aren't about
 	 * examinging variables.
 	 */
-
-	// ->measure()
-	if ( in_array( RMEASURE, $opts ) ) {
-		ray()->measure();
-	}
 
 	// ->count()
 	if ( in_array( RCOUNT, $opts ) ) {
