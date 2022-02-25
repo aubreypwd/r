@@ -1,0 +1,13 @@
+{
+    "name": "aubreypwd/r",
+    "description": "A better wrapper for spatie/ray.",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Aubrey Portwood",
+            "email": "code@aubreypwd.com"
+        }
+    ],
+    "require": {}
+}
