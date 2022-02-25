@@ -37,6 +37,7 @@ define( 'RCALLER', 1500 ); // https://spatie.be/docs/ray/v1/usage/framework-agno
 define( 'RTRACE', 1600 ); // https://spatie.be/docs/ray/v1/usage/framework-agnostic-php-project#see-the-caller-of-a-function
 define( 'RCOUNT', 1700 ); // https://spatie.be/docs/ray/v1/usage/framework-agnostic-php-project#counting-execution-times
 define( 'RONCE', 1800 ); // https://spatie.be/docs/ray/v1/usage/framework-agnostic-php-project#sending-a-payload-once
+define( 'RCLASSNAME', 1900 ); // https://spatie.be/docs/ray/v1/usage/framework-agnostic-php-project#display-the-class-name-of-an-object
 
 if ( ! function_exists( 'r' ) && function_exists( 'ray' ) ) {
 
@@ -166,6 +167,11 @@ if ( ! function_exists( 'r' ) && function_exists( 'ray' ) ) {
 
 			$ray->table( $vars[0] );
 		}
+
+		if ( in_array( RCLASSNAME, $opts ) ) {
+			$ray = ray()->className( ...$vars );
+		}
+
 
 		$ray = is_null( $ray ) ? ray( ...$vars ) : $ray;
 
