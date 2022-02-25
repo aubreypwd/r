@@ -16,5 +16,8 @@
         "files": [
             "src/r.php"
         ]
+    },
+    "require-dev": {
+        "kint-php/kint": "^4.1"
     }
 }
