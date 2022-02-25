@@ -6,13 +6,14 @@
  * and offers an easier syntax to call ray with.
  */
 
-error_reporting( E_ALL & ~E_NOTICE );
-
 if ( file_exists( __DIR__ . '/../vendor/autoload.php' ) ) {
 
 	require_once __DIR__ . '/../vendor/autoload.php';
 
 	if ( class_exists( 'Kint\Renderer\RichRenderer' ) ) {
+
+		error_reporting( E_ALL & ~E_NOTICE );
+
 		Kint\Renderer\RichRenderer::$theme = 'solarized-dark.css';
 	}
 }
